@@ -1,5 +1,5 @@
 
-export const Input = ({ type, placeholder, value, onChange, name }) => {
+export const Input = ({ type, placeholder, value, onChange, name,setToggle }) => {
 
     return (
         <p>
@@ -10,8 +10,9 @@ export const Input = ({ type, placeholder, value, onChange, name }) => {
                 onChange={onChange}
                 name={name}
             />
-            {name === 'togglePass' && <button className="eye-button">
-                <i className="fa fa-eye"></i>
+            {name === 'togglePass' && 
+            <button type='button' onClick={setToggle} className="eye-button">
+                <i className={type === "password" ? 'fa fa-eye-slash' :'fa fa-eye'}></i>
             </button>}
         </p>
     )

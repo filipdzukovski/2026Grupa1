@@ -68,3 +68,9 @@ body {
     cursor: pointer;
     margin: 20px 0px 0px 0px;
 }
+
+#app-select{
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+}
