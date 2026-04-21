@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import { Domashna } from './components/Domashna';
 import {Login} from './components/Login';
+import { SignUpFormClass } from './components/SignUpFormClass';
 import "./css/App.css";
 // Домашна: da se prikaze vo dopolnitelen fajl lista od filmovi (minimum 5 po vash izbor)
 // izdefinirana vo app so atributi {name,date,genre plot,imdbLink,imgUrl}
@@ -28,7 +29,8 @@ export function App(){
 
   return(
     <div id='app'>
-      <Login/>
+      <SignUpFormClass/>
+      {/* <Login/> */}
       {/* <Domashna movies = {filmovi}/> */}
       {/* <input 
       type='text'

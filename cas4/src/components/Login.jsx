@@ -9,7 +9,9 @@ export const Login = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [inputType, setInputType] = useState("password");
-    const [selectedOption, setSelectedOption] = useState(1)
+    const [selectedOption, setSelectedOption] = useState(1);
+    const [comment,setComment] = useState("");
+    const [longComment,setLongComment] = useState(false);
 
     const elements = [
         { value: 1, name: 'Facebook' },
@@ -20,15 +22,20 @@ export const Login = () => {
     useEffect(() => {
         console.log("Username: ", username);
         console.log("Password: ", password);
-    }, [username, password])
+        console.log("Comment: ", comment);
+    }, [username, password,comment])
 
-    function handleChangeInput() {
-        setInputType(inputType === 'password' ? 'text' : 'password')
+    function handleChangeTextInput() {
+        setInputType('password')
+    }
+
+     function handleChangePasswordInput() {
+        setInputType('text')
     }
 
     function showValues(event) {
         event.preventDefault();
-        alert(`Username: ${username}\nPassword: ${password}\nApplication: ${selectedOption}`)
+        alert(`Username: ${username}\nPassword: ${password}\nApplication: ${selectedOption}\nComment: ${comment}`)
     }
 
     return (
@@ -49,11 +56,21 @@ export const Login = () => {
                     placeholder={'Enter Password'}
                     value={password}
                     name='togglePass'
-                    setToggle={handleChangeInput}
+                    setToggleText={handleChangeTextInput}
+                    setTogglePassword={handleChangePasswordInput}
                     onChange={(e) => {
                         console.log(e)
                         setPassword(e.target.value)
                     }}
+                />
+                <Input 
+                    type='text'
+                    placeholder={'Enter Comment'}
+                    value={comment}
+                    onChange={(e)=>{setComment(e.target.value)}}
+                    renderTextArea={longComment}
+                    name='comment'
+                    changeInput = {()=>{setLongComment(!longComment)}}
                 />
                 <Dropdown elements={elements} onChange={(e) => { setSelectedOption(e.target.value) }} />
                 <button className='action-button'>Sign In</button>
