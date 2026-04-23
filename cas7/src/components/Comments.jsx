@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export const Comments = () => {
 
@@ -37,8 +38,10 @@ export const Comments = () => {
                                     <td>{comm.id}</td>
                                     <td>{comm.name}</td>
                                     <td>{comm.email}</td>
-                                    <td>{comm.body}</td>
-                                    <td><button onClick={() => { deleteItem(comm.id) }}>Delete</button></td>
+                                    <td>{comm.body.substring(0, 50)}...<Link to={'/comment/' + comm.id}>More</Link></td>
+                                    <td>
+                                        <button onClick={() => { deleteItem(comm.id) }}>Delete</button>
+                                    </td>
                                 </tr>
                             )
                         })}

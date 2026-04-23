@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 export const Posts = () => {
 
@@ -22,6 +23,7 @@ export const Posts = () => {
                         <th>ID</th>
                         <th>Title</th>
                         <th>Body</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,6 +33,7 @@ export const Posts = () => {
                                 <td>{post.id}</td>
                                 <td>{post.title}</td>
                                 <td>{post.body}</td>
+                                <td><Link to={`/post/${post.id}`}>Load Comments</Link></td>
                             </tr>
                         )
                     })}
