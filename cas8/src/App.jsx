@@ -1,9 +1,12 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Todos } from './components/Todos';
 import { Routes, Route } from 'react-router-dom';
 import { Home } from './components/Home';
 import { Gallery } from './components/Gallery';
+import { Nav } from './components/Nav';
 import axios from 'axios';
+import "./css/App.css"
+import { GalleryContext } from './utils/GalleryContext';
 
 export function App() {
 
@@ -13,13 +16,14 @@ export function App() {
   const [editTodo, setEditTodo] = useState(null);//{id,text,done}
 
 
-  const [photos,setPhotos] = useState([]);
+  const [selectedImage, setSelectedImage] = useState('')
+  const [photos, setPhotos] = useState([]);
 
-  useEffect(()=>{
+  useEffect(() => {
     axios('https://picsum.photos/v2/list')
-        .then(res=>setPhotos(res.data))
-        .catch(err=>alert)
-  },[])
+      .then(res => setPhotos(res.data))
+      .catch(err => alert)
+  }, [])
 
   function addTodo() {
     let newObj = {
@@ -61,6 +65,16 @@ export function App() {
     setEditTodo(null)
   }
   const completedElements = todos.filter(todo => todo.done).length;
+
+  // function openPhoto(url) {
+  //   setSelectedImage(url);
+  //   console.log(url)
+  // }
+
+  // function closePhoto() {
+  //   setSelectedImage('');
+  // }
+
   return (
     <div id='app'>
       {/* <input
@@ -76,17 +90,23 @@ export function App() {
       <button onClick={() => { setShowCompleted(!showCompleted) }}>
         {showCompleted ? 'Hide Completed' : 'Show Completed'}
       </button> */}
+      <Nav />
 
 
+      <GalleryContext.Provider value={{selectedImage,setSelectedImage}}>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/gallery'
+            element={
+              <Gallery
+                listOfPhotos={photos}
+                // selektiranaSlika={selectedImage}
+                // setImage={openPhoto}
+                // closeImage={closePhoto}
+              />}
 
-
-      <Routes>
-        <Route path='/' element={<Home/>} />
-        <Route path='/gallery' 
-        element={<Gallery listOfPhotos={photos}/>} 
-        
-        />
-        {/* <Route path='/todos' element={
+          />
+          {/* <Route path='/todos' element={
           <Todos
             listOfTodos={
               showCompleted ? todos : todos.filter(todo => !todo.done)
@@ -98,7 +118,8 @@ export function App() {
             handleCancel={handleCancel}
             handleSave={handleSave}
           />} /> */}
-      </Routes>
+        </Routes>
+      </GalleryContext.Provider>
     </div>
   )
 }
