@@ -19,7 +19,7 @@ export const Gallery = ({
                     <div
                         className='image-holder'
                         key={photo.id}
-                        onClick={() => { setSelectedImage(photo.download_url) }}
+                        onClick={() => { setSelectedImage(photo) }}
                     >
                         <img
                             src={photo.download_url}
@@ -31,7 +31,7 @@ export const Gallery = ({
                     </div>
                 )
             })}
-            {selectedImage !== '' && 
+            {selectedImage && 
             <Popup 
             // izbranaSlika={selektiranaSlika} 
             // zatvoriSlika={closeImage} 

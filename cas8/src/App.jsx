@@ -7,6 +7,8 @@ import { Nav } from './components/Nav';
 import axios from 'axios';
 import "./css/App.css"
 import { GalleryContext } from './utils/GalleryContext';
+import { AlbumsContext } from './utils/AlbumsContext';
+import { Albums } from './components/Albums';
 
 export function App() {
 
@@ -16,14 +18,23 @@ export function App() {
   const [editTodo, setEditTodo] = useState(null);//{id,text,done}
 
 
-  const [selectedImage, setSelectedImage] = useState('')
+  const [selectedImage, setSelectedImage] = useState(null)
   const [photos, setPhotos] = useState([]);
 
+  const [albums, setAlbums] = useState([]);
   useEffect(() => {
     axios('https://picsum.photos/v2/list')
       .then(res => setPhotos(res.data))
-      .catch(err => alert)
+      .catch(err => alert(err))
+    axios('https://jsonplaceholder.typicode.com/albums')
+      .then(res => { setAlbums(res.data) })
+      .catch(err => alert(err))
   }, [])
+
+  function deletePicture(id) {
+    setPhotos([...photos.filter(photo => photo.id !== id)]);
+    setSelectedImage(null);
+  }
 
   function addTodo() {
     let newObj = {
@@ -92,21 +103,22 @@ export function App() {
       </button> */}
       <Nav />
 
-
-      <GalleryContext.Provider value={{selectedImage,setSelectedImage}}>
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/gallery'
-            element={
-              <Gallery
-                listOfPhotos={photos}
+      <AlbumsContext.Provider value={{ albums, setAlbums }}>
+        <GalleryContext.Provider value={{ selectedImage, setSelectedImage,deletePicture }}>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/gallery'
+              element={
+                <Gallery
+                  listOfPhotos={photos}
                 // selektiranaSlika={selectedImage}
                 // setImage={openPhoto}
                 // closeImage={closePhoto}
-              />}
+                />}
 
-          />
-          {/* <Route path='/todos' element={
+            />
+            <Route path='/albums' element={<Albums />} />
+            {/* <Route path='/todos' element={
           <Todos
             listOfTodos={
               showCompleted ? todos : todos.filter(todo => !todo.done)
@@ -118,8 +130,9 @@ export function App() {
             handleCancel={handleCancel}
             handleSave={handleSave}
           />} /> */}
-        </Routes>
-      </GalleryContext.Provider>
+          </Routes>
+        </GalleryContext.Provider>
+      </AlbumsContext.Provider>
     </div>
   )
 }
